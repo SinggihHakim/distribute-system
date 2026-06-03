@@ -1,0 +1,24 @@
+// Features - placeholder folders (akan diisi di fase berikutnya)
+
+// Auth
+// lib/features/auth/data/
+// lib/features/auth/domain/
+// lib/features/auth/presentation/
+
+// Products
+// lib/features/products/data/
+// lib/features/products/domain/
+// lib/features/products/presentation/
+
+// Distributions
+// lib/features/distributions/data/
+// lib/features/distributions/domain/
+// lib/features/distributions/presentation/
+
+// Dashboard
+// lib/features/dashboard/presentation/
+
+// Reports
+// lib/features/reports/data/
+// lib/features/reports/domain/
+// lib/features/reports/presentation/
