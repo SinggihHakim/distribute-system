@@ -16,6 +16,9 @@ final supabase = Supabase.instance.client;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Pastikan env variable sudah ter-load sebelum init Supabase
+  SupabaseConfig.validate();
+
   await Supabase.initialize(
     url: SupabaseConfig.url,
     anonKey: SupabaseConfig.anonKey,
