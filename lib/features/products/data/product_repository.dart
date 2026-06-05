@@ -19,14 +19,28 @@ class ProductRepository {
 
   /// Ambil semua produk aktif milik toko yang sedang login
   Future<List<ProductModel>> getProducts({String? search}) async {
-    var query = _client
-        .from('products')
-        .select()
-        .eq('is_active', true)
-        .order('name', ascending: true);
+    final userData = await _getMyInfo();
+    final storeId = userData['store_id'] as String?;
 
-    final data = await query;
-    final products = data.map((e) => ProductModel.fromMap(e)).toList();
+    List<dynamic> data;
+    if (storeId != null) {
+      data = await _client
+          .from('products')
+          .select()
+          .eq('is_active', true)
+          .eq('store_id', storeId)
+          .order('name', ascending: true);
+    } else {
+      data = await _client
+          .from('products')
+          .select()
+          .eq('is_active', true)
+          .order('name', ascending: true);
+    }
+
+    final products = List<Map<String, dynamic>>.from(data)
+        .map((e) => ProductModel.fromMap(e))
+        .toList();
 
     // Filter search di client (Supabase free tier terbatas ilike)
     if (search != null && search.isNotEmpty) {

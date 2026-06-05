@@ -27,17 +27,23 @@ class DistributionRepository {
     final info = await _getMyInfo();
     final storeId = info['store_id'] as String;
 
-    var query = _client
-        .from('distributions')
-        .select('*, driver:driver_id(name), admin:admin_id(name)')
-        .eq('store_id', storeId);
-
+    List<dynamic> data;
     if (status != null) {
-      query = query.eq('status', status.value) as dynamic;
+      data = await _client
+          .from('distributions')
+          .select('*, driver:driver_id(name), admin:admin_id(name)')
+          .eq('store_id', storeId)
+          .eq('status', status.value)
+          .order('tanggal_keluar', ascending: false);
+    } else {
+      data = await _client
+          .from('distributions')
+          .select('*, driver:driver_id(name), admin:admin_id(name)')
+          .eq('store_id', storeId)
+          .order('tanggal_keluar', ascending: false);
     }
 
-    final data = await query.order('tanggal_keluar', ascending: false);
-    final list = List<Map<String, dynamic>>.from(data as List);
+    final list = List<Map<String, dynamic>>.from(data);
 
     // Load items untuk tiap distribusi
     final results = <DistributionModel>[];
@@ -55,17 +61,23 @@ class DistributionRepository {
     final info = await _getMyInfo();
     final myId = info['id'] as String;
 
-    var query = _client
-        .from('distributions')
-        .select('*, driver:driver_id(name), admin:admin_id(name)')
-        .eq('driver_id', myId);
-
+    List<dynamic> data;
     if (status != null) {
-      query = query.eq('status', status.value) as dynamic;
+      data = await _client
+          .from('distributions')
+          .select('*, driver:driver_id(name), admin:admin_id(name)')
+          .eq('driver_id', myId)
+          .eq('status', status.value)
+          .order('tanggal_keluar', ascending: false);
+    } else {
+      data = await _client
+          .from('distributions')
+          .select('*, driver:driver_id(name), admin:admin_id(name)')
+          .eq('driver_id', myId)
+          .order('tanggal_keluar', ascending: false);
     }
 
-    final data = await query.order('tanggal_keluar', ascending: false);
-    final list = List<Map<String, dynamic>>.from(data as List);
+    final list = List<Map<String, dynamic>>.from(data);
 
     final results = <DistributionModel>[];
     for (final row in list) {
