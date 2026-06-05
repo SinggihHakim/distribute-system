@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../data/distribution_repository.dart';
 import '../../products/data/product_repository.dart';
 import '../../../models/user_model.dart';
@@ -32,7 +31,6 @@ class _CreateDistributionPageState extends State<CreateDistributionPage> {
   bool _isLoading = true;
   bool _isSaving = false;
   String? _error;
-  String _diagText = 'Loading diagnostics...';
 
   final _searchController = TextEditingController();
 
@@ -66,42 +64,6 @@ class _CreateDistributionPageState extends State<CreateDistributionPage> {
       _error = null;
     });
     try {
-      final client = Supabase.instance.client;
-      final currentUser = client.auth.currentUser;
-      String diag = 'Auth User: ${currentUser?.email}\nAuth UID: ${currentUser?.id}\n';
-
-      debugPrint('--- DIAGNOSTICS BEGIN ---');
-      debugPrint('Current Auth User: ${currentUser?.id} (${currentUser?.email})');
-      try {
-        final role = await client.rpc('get_my_role');
-        debugPrint('RPC get_my_role: $role');
-        diag += 'RPC get_my_role: $role\n';
-      } catch (e) {
-        debugPrint('RPC get_my_role error: $e');
-        diag += 'RPC get_my_role Err: $e\n';
-      }
-      try {
-        final storeId = await client.rpc('get_my_store_id');
-        debugPrint('RPC get_my_store_id: $storeId');
-        diag += 'RPC get_my_store_id: $storeId\n';
-      } catch (e) {
-        debugPrint('RPC get_my_store_id error: $e');
-        diag += 'RPC get_my_store_id Err: $e\n';
-      }
-      try {
-        final userId = await client.rpc('get_my_user_id');
-        debugPrint('RPC get_my_user_id: $userId');
-        diag += 'RPC get_my_user_id: $userId';
-      } catch (e) {
-        debugPrint('RPC get_my_user_id error: $e');
-        diag += 'RPC get_my_user_id Err: $e';
-      }
-      debugPrint('--- DIAGNOSTICS END ---');
-
-      setState(() {
-        _diagText = diag;
-      });
-
       final drivers = await _distRepo.getDrivers();
       final products = await _prodRepo.getProducts();
       setState(() {
@@ -299,40 +261,6 @@ class _CreateDistributionPageState extends State<CreateDistributionPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Diagnostic Card (Subtle)
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.only(bottom: 20),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey[300]!),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'DEBUG CONTEXT:',
-                  style: GoogleFonts.poppins(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.grey[700],
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _diagText,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontFamily: 'monospace',
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
           // ── Step 1: Pilih Driver ─────────────────────
           _sectionHeader('1', 'Pilih Driver', AppColors.primary),
           const SizedBox(height: 12),

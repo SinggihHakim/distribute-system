@@ -4,6 +4,8 @@ import '../../../core/theme/app_colors.dart';
 import '../../products/presentation/products_page.dart';
 import '../../distributions/presentation/distributions_page.dart';
 import '../../distributions/presentation/driver_distributions_page.dart';
+import '../../dashboard/presentation/admin_dashboard_page.dart';
+import '../../dashboard/presentation/driver_dashboard_page.dart';
 import '../data/auth_service.dart';
 import 'settings_page.dart';
 
@@ -48,12 +50,7 @@ class _AdminShellState extends State<AdminShell> {
 
   // Pages list
   final List<Widget> _pages = const [
-    _PlaceholderPage(
-      icon: Icons.dashboard_rounded,
-      title: 'Dashboard Admin',
-      subtitle: 'Coming soon — Fase 4',
-      color: AppColors.primary,
-    ),
+    AdminDashboardPage(), // ✅ Fase 4
     ProductsPage(), // ✅ Fase 2
     DistributionsPage(), // ✅ Fase 3
     _PlaceholderPage(
@@ -100,12 +97,7 @@ class _DriverShellState extends State<DriverShell> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = const [
-    _PlaceholderPage(
-      icon: Icons.home_rounded,
-      title: 'Dashboard Driver',
-      subtitle: 'Gunakan tab sebelah untuk melihat distribusi kamu',
-      color: AppColors.primary,
-    ),
+    DriverDashboardPage(), // ✅ Fase 4
     DriverDistributionsPage(), // ✅ Fase 3
   ];
 
